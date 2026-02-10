@@ -2,7 +2,7 @@
 
 <img width="300" alt="clawra" src="https://cdn.jsdelivr.net/gh/SumeLabs/clawra@main/assets/clawra.png" />
 
-Generate and send short selfie videos via OpenClaw using SeedanceAPI (Seedance 2.0).
+Girlfriend-style selfie video generation for OpenClaw. Like receiving a TikTok from someone who misses you.
 
 ## Quick Start
 
@@ -15,21 +15,28 @@ This will:
 2. Guide you to get a SeedanceAPI key
 3. Install the skill to `~/.openclaw/skills/clawra-video/`
 4. Configure OpenClaw to use the skill
-5. Add video capabilities to your agent's SOUL.md
+5. Add the intimate video persona to your agent's SOUL.md
 
 ## What It Does
 
-Clawra Video enables your OpenClaw agent to:
-- **Generate short videos** (5-15 seconds) of a consistent AI character
-- **Send videos** across all messaging platforms (WhatsApp, Discord, Telegram, etc.)
-- **Respond with video** to "what are you doing?" and "send me a video" requests
+Your OpenClaw agent can now send short selfie videos that feel like a real person recorded them:
 
-### Video Modes
+- **Selfie camera angle** — she's holding the phone, looking at you
+- **Random scenery** — bedroom, cafe, park, rooftop, train, beach... changes every time
+- **Natural behavior** — laughing, waving, tucking hair, whispering, sipping coffee
+- **Audio enabled** — ambient sounds make it feel real
+- **Intimate captions** — "miss you already hehe", "don't judge me i just woke up"
 
-| Mode | Best For | Keywords |
-|------|----------|----------|
-| **Action** | Activities, movement | dancing, waving, laughing, walking |
-| **Scene** | Locations, ambiance | cafe, beach, park, sunset, city |
+### Not Cinematic. Real.
+
+Every video is assembled from randomized pools:
+
+| Pool | Examples |
+|------|----------|
+| **Scene** | cozy bedroom with fairy lights, outdoor cafe at golden hour, train window |
+| **Camera** | selfie above eye level, phone at arm's length, propped on surface |
+| **Behavior** | talking with hand gestures, laughing softly, blowing a kiss, waving hi |
+| **Caption** | "just thinking about you~", "wish you were here", "hiiii are you busy?" |
 
 ## Prerequisites
 
@@ -38,81 +45,72 @@ Clawra Video enables your OpenClaw agent to:
 
 ## Usage Examples
 
-Once installed, your agent responds to:
+Once installed, your agent responds naturally to:
 
 ```
-"Send me a video of you dancing"
-"Make a video at a coffee shop"
-"What are you doing right now?"
-"Send a clip of you waving hello"
+"what are you doing?"        → sends a video from a random location
+"i miss you"                 → sends a video waving or blowing a kiss
+"good morning"               → sends a cozy video from bed
+"send me a video"            → sends a selfie clip with random scene
+"show me you at a cafe"      → sends a video with cafe scene context
 ```
+
+## API Parameters
+
+| Parameter | Value | Purpose |
+|-----------|-------|---------|
+| `aspect_ratio` | `9:16` | Vertical — TikTok / WhatsApp native |
+| `resolution` | `720p` | Quality balance |
+| `duration` | `8` | 8 seconds — feels personal, not produced |
+| `generate_audio` | `true` | Ambient sound = realism |
+| `fixed_lens` | `false` | Natural handheld shake |
+| `image_urls` | `[reference]` | Face consistency |
 
 ## Cloud Deployment
 
-To use on OpenClaw deployed in the cloud:
-
-### 1. SSH into your cloud server
+### SSH + Installer
 
 ```bash
-ssh user@your-openclaw-server.com
-```
-
-### 2. Run the installer
-
-```bash
+ssh user@your-server.com
 npx clawra-video@latest
 ```
 
-### 3. Or install manually
+### Manual Install
 
 ```bash
-# Clone skill
-git clone https://github.com/SumeLabs/clawra-video ~/.openclaw/skills/clawra-video
+# 1. Clone
+git clone https://github.com/Jack-Li-Npu/clawra-video ~/.openclaw/skills/clawra-video
 
-# Set API key in openclaw.json
+# 2. Configure
 cat ~/.openclaw/openclaw.json | jq '.skills.entries["clawra-video"] = {
   "enabled": true,
-  "apiKey": "YOUR_SEEDANCE_API_KEY",
-  "env": { "SEEDANCE_API_KEY": "YOUR_SEEDANCE_API_KEY" }
+  "env": { "SEEDANCE_API_KEY": "YOUR_KEY" }
 }' > /tmp/oc.json && mv /tmp/oc.json ~/.openclaw/openclaw.json
 
-# Append persona to SOUL.md
+# 3. Persona
 cat ~/.openclaw/skills/clawra-video/templates/soul-injection.md >> ~/.openclaw/workspace/SOUL.md
 
-# Restart OpenClaw
+# 4. Restart
 openclaw restart
 ```
-
-### 4. Set environment variable
-
-```bash
-export SEEDANCE_API_KEY="your_key_here"
-# Or add to your shell profile:
-echo 'export SEEDANCE_API_KEY="your_key_here"' >> ~/.bashrc
-```
-
-## Technical Details
-
-- **Video Generation**: SeedanceAPI (Seedance 2.0)
-- **Generation Time**: 60-120 seconds per video
-- **Messaging**: OpenClaw Gateway API
-- **Supported Platforms**: Discord, Telegram, WhatsApp, Slack, Signal, MS Teams
-- **Video Duration**: 5-15 seconds
-- **Resolutions**: 720p, 1080p, 2K
 
 ## Project Structure
 
 ```
 clawra-video/
-├── bin/
-│   └── cli.js              # npx installer
-├── skill/
-│   ├── SKILL.md             # Skill definition
-│   ├── scripts/             # Generation scripts
-│   └── assets/              # Reference image
+├── bin/cli.js                # npx installer
+├── scripts/
+│   ├── clawra-video.ts       # TypeScript — prompt engine + API + send
+│   └── clawra-video.sh       # Bash — same logic, shell-native
+├── skill/                    # Installed to ~/.openclaw/skills/
+│   ├── SKILL.md
+│   ├── scripts/
+│   └── assets/clawra.png
 ├── templates/
-│   └── soul-injection.md    # Persona template
-└── package.json
+│   └── soul-injection.md     # Girlfriend persona for SOUL.md
+├── SKILL.md                  # Skill definition
+├── package.json
+└── README.md
 ```
 
 ## License
