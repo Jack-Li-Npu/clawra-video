@@ -1,0 +1,44 @@
+{
+  "name": "clawra-video",
+  "version": "1.0.0",
+  "description": "Add selfie video superpowers to your OpenClaw agent using SeedanceAPI (Seedance 2.0)",
+  "bin": {
+    "clawra-video": "./bin/cli.js"
+  },
+  "files": [
+    "bin/",
+    "skill/",
+    "templates/",
+    "SKILL.md",
+    "scripts/",
+    "assets/"
+  ],
+  "keywords": [
+    "openclaw",
+    "seedance",
+    "seedanceapi",
+    "video-generation",
+    "ai-video",
+    "selfie",
+    "ai-agent",
+    "messaging",
+    "whatsapp",
+    "bytedance"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SumeLabs/clawra-video"
+  },
+  "homepage": "https://github.com/SumeLabs/clawra-video#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.0"
+  }
+}
